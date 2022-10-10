@@ -1,10 +1,26 @@
 import React from 'react';
-import Founder from "../components/Founder";
+import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Clients from '../components/Clients';
+import Founder from "../components/Founder";
+import Client from '../components/Client';
 
 function About() {
+    const src = "https://6343d71c2dadea1175ae4698.mockapi.io/clients"
+    const [clients, setClients] = React.useState([]);
+    const getClients = async () => {
+        try {
+            const res = await axios.get(src);
+            setClients(res.data)
+        } catch (error) {
+            console.log(error);
+        }
+        console.log(getClients());
+    }
+    React.useEffect(() => {
+        getClients()
+    }, [clients]);
+
     return (
         <div className="wrapper">
             <Header></Header>
@@ -22,7 +38,13 @@ function About() {
                     <p>Our name and reputation are our most important investment.</p>
                     <p>We are the best place in Moldova for <strong>sophisticated, thoughtful gifts</strong> and want our brand to reflect the high level of our standards.</p>
                     <p><strong>Our customers know</strong> that Lusso only showcases items from well selected, exclusive and reputable companies of home décor and gifts.</p>
-                    <Clients />
+
+                    <div className="clients">
+                        <div className="clients__body">
+                            {clients.map(client => <Client key={client.instagram} client={client} />)}
+                        </div>
+                    </div>
+
                     <p>We pride ourselves on our long-lasting and beautiful partnerships.</p>
                     <p>Lusso has also expanded its home decor universe with the works of Moldovan sculptors.</p>
                     <p>Our art collection highlights the pioneer artisans’ signature aesthetic and brings a range of everyday objects that are sculptural, organic and captivating.</p>
