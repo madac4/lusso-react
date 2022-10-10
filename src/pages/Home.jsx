@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-import { hero } from '../assets/img/hero.jpg';
+import hero from '../assets/img/hero.jpg';
 import olga from '../assets/img/olga.png';
 
 function Home() {
@@ -11,17 +12,19 @@ function Home() {
         <div className="wrapper">
             <Header></Header>
             <main>
-                {/* <div
+                <div
                     className="hero"
-                    style="background: url(@img/hero.jpg) 50% 50% / cover no-repeat">
+                    style={{
+                        background: `url(${hero}) 50% 50% / cover no-repeat`,
+                    }}>
                     <h1>LUSSO</h1>
                     <h2>Homeware & Gifts</h2>
-                    <a href="te:+373 69 321 221">+373 69 321 221</a>
+                    <a href="tel:+37369321221">+373 69 321 221</a>
                     <a href="mailto:lussostore@email.com">lussostore@email.com</a>
                     <button className="go-bottom">
                         <span className="icon-chevron__down"></span>
                     </button>
-                </div> */}
+                </div>
                 <div className="products go-button__section">
                     <div className="products__container">
                         <p className="products__concept">
@@ -72,9 +75,9 @@ function Home() {
                                 <h4>16 000 MDL</h4>
                             </article>
                         </div>
-                        <a href="catalog.html" className="products__button button button__dark">
+                        <Link to="/catalog" className="products__button button button__dark">
                             Смотреть весь каталог
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 <div className="about">
@@ -95,9 +98,9 @@ function Home() {
                                     Iusto omnis necessitatibus incidunt aliquid aliquam enim
                                     exercitationem eum. Distinctio et et nihil ea sequi fuga.
                                 </p>
-                                <a href="about.html" className="button button__dark">
+                                <Link to="/about" className="button button__dark">
                                     Узнать больше
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <img src="@img/about-home.jpg" alt="" />
@@ -137,16 +140,15 @@ function Home() {
                             Следите за нами в{' '}
                             <a
                                 href="https://instagram.com/lusso.md?igshid=MDE2OWE1N2Q="
-                                target="_blank">
+                                target="_blank"
+                                rel="noreferrer">
                                 instagram
                             </a>
                         </h2>
                         <div className="instagram__body">
-                            <img src="@img/insta1.jpg" alt="insta" />
-                            <img src="@img/insta2.jpg" alt="" />
-                            <img src="@img/insta3.jpg" alt="" />
-                            <img src="@img/insta4.jpg" alt="" />
-                            <img src="@img/insta5.jpg" alt="" />
+                            {/* {instagramFeed.map((data, index) => (
+                                <img key={`${data.post}_${index}`} src={data.post} alt="" />
+                            ))} */}
                         </div>
                     </div>
                 </div>
@@ -163,11 +165,27 @@ function Home() {
                     <div className="socials">
                         <a
                             href="https://instagram.com/lusso.md?igshid=MDE2OWE1N2Q="
-                            target="_blank">
+                            target="_blank"
+                            rel="noreferrer">
                             <span className="icon-instagram"></span>
                         </a>
-                        <a href="https://m.facebook.com/LussoHomewareGifts/" target="_blank">
-                            <span className="icon-telegram"></span>
+                        <a
+                            href="https://m.facebook.com/LussoHomewareGifts/"
+                            target="_blank"
+                            rel="noreferrer">
+                            <svg
+                                width="30"
+                                height="30"
+                                viewBox="0 0 30 30"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    d="M15 0C6.71573 0 0 6.71573 0 15C0 23.2843 6.71573 30 15 30C23.2843 30 30 23.2843 30 15C30 6.71573 23.2843 0 15 0ZM16.5635 15.6589V23.8197H13.1869V15.6592H11.5V12.8469H13.1869V11.1585C13.1869 8.86425 14.1395 7.5 16.8457 7.5H19.0988V10.3126H17.6905C16.637 10.3126 16.5673 10.7056 16.5673 11.4391L16.5635 12.8466H19.1147L18.8162 15.6589H16.5635Z"
+                                    fill="black"
+                                />
+                            </svg>
                         </a>
                     </div>
                 </div>
