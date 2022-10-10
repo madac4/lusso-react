@@ -15,25 +15,24 @@
         }
     }
     &__nav {
+        position: relative;
+        z-index: 2;
         @media (max-width: $mobile) {
             position: fixed;
             width: 80%;
             height: 100%;
+            top: 0;
             background-color: #fff;
             right: -80%;
             transition: 0.3s;
-            padding-top: 40px;
+            padding-top: 80px;
             padding-left: 40px;
             &.active {
                 right: 0;
             }
         }
         .header-contacts__socials {
-            display: none;
-            @media (max-width: $mobile) {
-                display: flex;
-                margin-top: 30px;
-            }
+            margin-top: 30px;
         }
         ul {
             display: flex;
@@ -72,11 +71,8 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            @media (max-width: $mobile) {
-                display: none;
-            }
             a {
-                display: block;
+                display: flex;
                 transition: 0.3s;
                 &:hover {
                     transform: translateY(-3px);
