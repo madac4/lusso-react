@@ -15,7 +15,7 @@
     &.open {
         opacity: 1;
         visibility: visible;
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
     }
     @media (max-width: $mobile) {
         width: 100%;
