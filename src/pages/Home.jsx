@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import Header from '../components/Header';
@@ -8,6 +8,16 @@ import hero from '../assets/img/hero.jpg';
 import olga from '../assets/img/olga.png';
 
 function Home() {
+
+    const heroSection = document.querySelector('.hero')
+    const ref = useRef();
+
+    
+    const goBottom = () => {
+        console.log('da')
+    }
+
+
     return (
         <div className="wrapper">
             <Header></Header>
@@ -21,11 +31,11 @@ function Home() {
                     <h2>Homeware & Gifts</h2>
                     <a href="tel:+37369321221">+373 69 321 221</a>
                     <a href="mailto:lussostore@email.com">lussostore@email.com</a>
-                    <button className="go-bottom">
+                    <button className="go-bottom" onClick={goBottom}>
                         <span className="icon-chevron__down"></span>
                     </button>
                 </div>
-                <div className="products go-button__section">
+                <div className="products go-button__section" ref={ref}>
                     <div className="products__container">
                         <p className="products__concept">
                             Наша основная концепция — совмещение уюта и autem impedit adipisci.
