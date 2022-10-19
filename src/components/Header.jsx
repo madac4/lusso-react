@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 
 import logo from '../assets/img/logos/logo.svg';
-function Header() {
-    const [burger, setBurger] = React.useState(false);
+
+function Header(props) {
+    const [burger, setBurger] = useState(false);
     const { width } = useWindowDimensions();
 
+    const heroSection = document.querySelector('.hero');
     const toggleBurger = () => {
         setBurger(!burger);
     };
+
     return (
-        <header className="header">
+        <header
+            className={
+                props.isHidden
+                    ? 'header sticky hidden'
+                    : 'header sticky' && !heroSection
+                    ? 'header sticky'
+                    : 'header sticky p-fixed'
+            }>
             <div className="header__container">
                 <Link to="/" className="header__logo">
                     <img src={logo} alt="logo" />

@@ -13,7 +13,7 @@
         font-size: 40px;
         line-height: 50px;
         @include adaptiv-value('line-height', 50, 30, 1);
-        color: #FFFFFF;
+        color: #ffffff;
         @include adaptiv-value('margin-bottom', 50, 30, 1);
     }
     a {
@@ -21,7 +21,7 @@
         @include adaptiv-value('font-size', 24, 18, 1);
         line-height: 28px;
         @include adaptiv-value('line-height', 28, 20, 1);
-        color: #FFFFFF;
+        color: #ffffff;
         &:first-of-type {
             margin-bottom: 10px;
         }
@@ -30,12 +30,15 @@
         position: absolute;
         bottom: 50px;
         &:hover {
-            animation: go-bottom 0.6s ease;
+            animation: go-bottom 1.5s ease infinite;
         }
         span {
-            color: #FFFFFF;
+            color: #ffffff;
             font-size: 40px;
         }
+    }
+    &.ios {
+        height: 90vh;
     }
 }
 
@@ -100,7 +103,7 @@
         align-items: center;
         justify-content: center;
         width: 50%;
-        background-color: #FAF9F5;
+        background-color: #faf9f5;
         @media (max-width: $tablet) {
             width: 100%;
         }
@@ -108,7 +111,8 @@
             display: flex;
             justify-content: center;
             flex-direction: column;
-            @media (max-width: $tablet) {}
+            @media (max-width: $tablet) {
+            }
             max-width: 685px;
             padding: 30px;
             h2 {
@@ -159,7 +163,7 @@
             display: inline;
             max-width: 60px;
             margin-bottom: 30px;
-            transition: .3s;
+            transition: 0.3s;
         }
         h4 {
             margin-bottom: 10px;
@@ -168,7 +172,7 @@
 }
 
 .instagram {
-    background-color: #FAF9F5;
+    background-color: #faf9f5;
     @include adaptiv-value('padding-top', 100, 50, 1);
     @include adaptiv-value('padding-bottom', 100, 50, 1);
     h2 {
@@ -231,7 +235,7 @@
         align-items: center;
         gap: 10px;
         a {
-            transition: .3s;
+            transition: 0.3s;
             &:hover {
                 transform: translateY(-3px);
             }
@@ -250,7 +254,7 @@
         transform: translateY(0);
     }
     50% {
-        transform: translateY(8px);
+        transform: translateY(10px);
     }
     0% {
         transform: translateY(0);

@@ -85,13 +85,20 @@
         }
     }
     &.sticky {
-        position: fixed;
+        position: -webkit-sticky;
+        position: sticky;
         width: 100%;
         left: 0;
         top: 0;
         right: 0;
         animation: fixedHeader 0.4s;
         z-index: 5;
+    }
+    &.hidden {
+        display: none;
+    }
+    &.p-fixed{
+        position: fixed;
     }
 }
 

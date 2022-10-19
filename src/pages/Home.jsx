@@ -1,19 +1,26 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { slice } from 'lodash';
+import axios from 'axios';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Proud from '../components/Proud';
+import useScrollPosition from '../hooks/useScrollPosition';
 
-import hero from '../assets/img/hero.jpg';
 import olga from '../assets/img/olga.png';
 import Product from '../components/Product';
+import hero from '../assets/img/hero.jpg';
 
 function Home() {
-    const [advantages, setAdvantages] = React.useState([]);
-    const [products, setProducts] = React.useState([]);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const [advantages, setAdvantages] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [heroHeight, setHeroHeight] = useState(0);
+    const ref = useRef(null);
+    const goBottom = useRef(null);
+    const [hidden, setHidden] = useState(true);
+    const scrollPosition = useScrollPosition();
 
     React.useEffect(() => {
         const getAdvantages = async () => {
@@ -29,24 +36,49 @@ function Home() {
     }, [advantages]);
 
     const displayProducts = slice(products, 0, 8);
+
+    useEffect(() => {
+        setHeroHeight(ref.current.clientHeight);
+    }, [setHeroHeight]);
+
+    const handleGoBottomClick = () => {
+        const pos = goBottom.current.offsetTop;
+        window.scrollTo({
+            top: pos - 149,
+            behavior: 'smooth',
+        });
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', headerHidden);
+        return () => {
+            window.removeEventListener('scroll', headerHidden);
+        };
+    });
+
+    const headerHidden = () => {
+        scrollPosition >= heroHeight ? setHidden(false) : setHidden(true);
+    };
+
     return (
         <div className="wrapper">
-            <Header></Header>
+            <Header isHidden={hidden} />
             <main>
                 <div
-                    className="hero"
+                    className={isIOS ? 'hero ios' : 'hero'}
                     style={{
                         background: `url(${hero}) 50% 50% / cover no-repeat`,
-                    }}>
+                    }}
+                    ref={ref}>
                     <h1>LUSSO</h1>
                     <h2>Homeware & Gifts</h2>
                     <a href="tel:+37369321221">+373 69 321 221</a>
                     <a href="mailto:lussostore@email.com">lussostore@email.com</a>
-                    <button className="go-bottom">
+                    <button className="go-bottom" onClick={handleGoBottomClick}>
                         <span className="icon-chevron__down"></span>
                     </button>
                 </div>
-                <div className="products go-button__section">
+                <div className="products go-button__section" ref={goBottom}>
                     <div className="products__container">
                         <p className="products__concept">
                             Наша основная концепция — совмещение уюта и autem impedit adipisci.
