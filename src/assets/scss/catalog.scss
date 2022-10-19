@@ -67,6 +67,10 @@
                 &:hover {
                     color: $accentcolor;
                 }
+                &.current {
+                    font-weight: 600;
+                    color: $accentcolor;
+                }
             }
         }
         .filters-checkbox {

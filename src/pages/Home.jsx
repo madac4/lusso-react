@@ -1,41 +1,77 @@
-import React, { useRef } from 'react';
+import React, {useState,useRef, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Proud from '../components/Proud';
+import useScrollPosition from '../hooks/useScrollPosition';
 
-import hero from '../assets/img/hero.jpg';
 import olga from '../assets/img/olga.png';
+import hero from '../assets/img/hero.jpg';
+
 
 function Home() {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const [advantages, setAdvantages] = useState([]);
+    const [heroHeight, setHeroHeight] = useState(0)
+    const ref = useRef(null)
+    const goBottom = useRef(null)
+    const [hidden, setHidden] = useState(true);
+    const scrollPosition = useScrollPosition();
+    
+    React.useEffect(() => {
+        const getAdvantages = async () => {
+            const res = await axios.get(`${process.env.REACT_APP_API}/advantages`);
+            setAdvantages(res.data);
+        };
+        getAdvantages();
+    }, [advantages]);
 
-    const heroSection = document.querySelector('.hero')
-    const ref = useRef();
+
+    useEffect(() => {
+        setHeroHeight(ref.current.clientHeight)
+    }, [setHeroHeight])
 
     
-    const goBottom = () => {
-        console.log('da')
+    const handleGoBottomClick = () => {
+        const pos = goBottom.current.offsetTop
+        window.scrollTo({ 
+            top: pos - 149,
+            behavior: 'smooth'
+        })
     }
 
+    useEffect(() => {
+        window.addEventListener('scroll', headerHidden)
+        return () => {
+            window.removeEventListener('scroll', headerHidden)
+        };
+    });
+
+    const headerHidden = () => {
+        scrollPosition >= heroHeight ? setHidden(false) : setHidden(true)
+    }
 
     return (
         <div className="wrapper">
-            <Header></Header>
+            <Header isHidden={hidden} />
             <main>
                 <div
-                    className="hero"
+                    className={isIOS ? 'hero ios' : 'hero' }
                     style={{
                         background: `url(${hero}) 50% 50% / cover no-repeat`,
-                    }}>
+                    }}
+                    ref={ref}>
                     <h1>LUSSO</h1>
                     <h2>Homeware & Gifts</h2>
                     <a href="tel:+37369321221">+373 69 321 221</a>
                     <a href="mailto:lussostore@email.com">lussostore@email.com</a>
-                    <button className="go-bottom" onClick={goBottom}>
+                    <button className="go-bottom" onClick={handleGoBottomClick}>
                         <span className="icon-chevron__down"></span>
                     </button>
                 </div>
-                <div className="products go-button__section" ref={ref}>
+                <div className="products go-button__section" ref={goBottom}>
                     <div className="products__container">
                         <p className="products__concept">
                             Наша основная концепция — совмещение уюта и autem impedit adipisci.
@@ -113,34 +149,16 @@ function Home() {
                                 </Link>
                             </div>
                         </div>
-                        <img src="@img/about-home.jpg" alt="" />
+                        <img src="assets/img/about-home.jpg" alt="" />
                     </div>
                 </div>
                 <div className="proud">
                     <div className="proud__container">
                         <h2>Мы гордимся нашими продуктами</h2>
                         <div className="proud__body">
-                            <div className="proud__item">
-                                <img src="@img/pride1.svg" alt="" />
-                                <h4>Материалы</h4>
-                                <p>
-                                    Accusantium delectus ducimus nihil et sunt minima praesentium
-                                    libero.
-                                </p>
-                            </div>
-                            <div className="proud__item">
-                                <img src="@img/pride2.svg" alt="" />
-                                <h4>Дизайн</h4>
-                                <p>Sed enim temporibus vitae saepe commodi officia eum sit.</p>
-                            </div>
-                            <div className="proud__item">
-                                <img src="@img/pride3.svg" alt="" />
-                                <h4>Качество</h4>
-                                <p>
-                                    Incidunt voluptates ipsa deserunt quia magnam quibusdam deserunt
-                                    iure.
-                                </p>
-                            </div>
+                            {advantages.map((advantage) => (
+                                <Proud key={advantage.title} item={advantage} />
+                            ))}
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import React, {useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Founder from "../components/Founder";
+import Founder from '../components/Founder';
 import Client from '../components/Client';
 
 function About() {
@@ -11,7 +11,6 @@ function About() {
     useEffect(() => {
         axios.get('https://6343d71c2dadea1175ae4698.mockapi.io/clients')
             .then(res => {
-                // console.log(res)
                 setClients(res.data)
             })
             .catch(err => {

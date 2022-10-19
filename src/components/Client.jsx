@@ -28,9 +28,6 @@ const Client = ({client}) => {
             <span className="clients-card__instagram">{client.instagram}</span>
             <p>{client.description}</p>
             <div className="clients-card__images">
-                {/* {client.images
-                    .map(image => (<img key={image} src={image} alt="client-img" />))
-                } */}
                 {imagesArr}
             </div>
         </div>

@@ -55,11 +55,6 @@
                 img {
                     width: 66px;
                 }
-                .empty {
-                    height: 66px;
-                    width: 66px;
-                    border: $border;
-                }
             }
         }
     }
@@ -107,4 +102,11 @@
             }
         }
     }
+}
+
+.empty {
+    height: 66px;
+    width: 66px;
+    border: $border;
+    display: block;
 }
