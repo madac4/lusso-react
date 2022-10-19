@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { slice } from 'lodash';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -8,18 +9,26 @@ import Proud from '../components/Proud';
 
 import hero from '../assets/img/hero.jpg';
 import olga from '../assets/img/olga.png';
+import Product from '../components/Product';
 
 function Home() {
     const [advantages, setAdvantages] = React.useState([]);
+    const [products, setProducts] = React.useState([]);
 
     React.useEffect(() => {
         const getAdvantages = async () => {
             const res = await axios.get(`${process.env.REACT_APP_API}/advantages`);
             setAdvantages(res.data);
         };
+        const getProducts = async () => {
+            const res = await axios.get(`${process.env.REACT_APP_API}/products`);
+            setProducts(res.data);
+        };
         getAdvantages();
+        getProducts();
     }, [advantages]);
 
+    const displayProducts = slice(products, 0, 8);
     return (
         <div className="wrapper">
             <Header></Header>
@@ -46,46 +55,10 @@ function Home() {
                             Voluptas aut deserunt ipsa ut repudiandae illum voluptas praesentium.
                         </p>
                         <div className="products__grid products-grid">
-                            <article className="product">
-                                <img src="@img/product1.jpg" alt="" />
-                                <p>Repudiandae aperiam asperiores</p>
-                                <h4>1200 MDL</h4>
-                            </article>
-                            <article className="product">
-                                <img src="@img/product2.jpg" alt="" />
-                                <p>Voluptatibus facilis voluptatibus</p>
-                                <h4>16 000 MDL</h4>
-                            </article>
-                            <article className="product">
-                                <img src="@img/product3.jpg" alt="" />
-                                <p>Officiis aut quia</p>
-                                <h4>800 MDL</h4>
-                            </article>
-                            <article className="product">
-                                <img src="@img/product4.jpg" alt="" />
-                                <p>Aliquid laborum praesentium</p>
-                                <h4>4200 MDL</h4>
-                            </article>
-                            <article className="product">
-                                <img src="@img/product2.jpg" alt="" />
-                                <p>Voluptatibus facilis voluptatibus</p>
-                                <h4>16 000 MDL</h4>
-                            </article>
-                            <article className="product">
-                                <img src="@img/product1.jpg" alt="" />
-                                <p>Repudiandae aperiam asperiores</p>
-                                <h4>1200 MDL</h4>
-                            </article>
-                            <article className="product">
-                                <img src="@img/product3.jpg" alt="" />
-                                <p>Officiis aut quia</p>
-                                <h4>800 MDL</h4>
-                            </article>
-                            <article className="product">
-                                <img src="@img/product4.jpg" alt="" />
-                                <p>Aliquid laborum praesentium</p>
-                                <h4>16 000 MDL</h4>
-                            </article>
+                            {displayProducts &&
+                                displayProducts.map((item, i) => (
+                                    <Product key={`${item.name}_${i}`} product={item} />
+                                ))}
                         </div>
                         <Link to="/catalog" className="products__button button button__dark">
                             Смотреть весь каталог

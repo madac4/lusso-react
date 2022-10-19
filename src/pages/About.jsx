@@ -15,11 +15,10 @@ function About() {
         } catch (error) {
             console.log(error);
         }
-        console.log(getClients());
     };
     React.useEffect(() => {
         getClients();
-    }, [clients]);
+    }, []);
 
     return (
         <div className="wrapper">

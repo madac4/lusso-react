@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import { slice } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 
 import Product from './Product';
+import Modal from './Modal';
 
 function Products() {
     const [products, setProducts] = React.useState([]);
@@ -12,8 +14,7 @@ function Products() {
     const [singleProduct, setSingleProduct] = React.useState([]);
     const [openModal, setOpenModal] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
-
-    const getProducts = async () => {};
+    const navigate = useNavigate();
 
     const loadMore = () => {
         setIndex(index + 6);
@@ -25,15 +26,21 @@ function Products() {
     };
 
     React.useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_API}/products`)
-            .then((res) => {
-                setProducts(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+        async function fetchProducts() {
+            try {
+                const { data } = await axios.get(`${process.env.REACT_APP_API}/products`);
+                setProducts(data);
+            } catch (error) {
+                alert('Ошибка при получении каталога!');
+                navigate('/');
+            }
+        }
+        fetchProducts();
+    }, [navigate]);
+
+    if (!products) {
+        return <>Загрузка...</>;
+    }
 
     const getProductModal = (id) => {
         const getProduct = async () => {
@@ -42,9 +49,7 @@ function Products() {
         };
         getProduct();
         setOpenModal(true);
-        if (singleProduct.name) {
-            setLoading(false);
-        }
+        setLoading(false);
     };
 
     const closeModal = () => {
@@ -68,71 +73,13 @@ function Products() {
                     Показать еще
                 </button>
             )}
-            <div className={openModal ? 'product-modal open' : 'product-modal'}>
-                {loading ? (
-                    <h2>Loading . . . </h2>
-                ) : (
-                    <div className="product-modal__body modal-body">
-                        <div className="modal-body__slider">
-                            <div className="page__product-slider product-slider">
-                                <div className="product-slider__body">
-                                    <div className="product-slider__slider">
-                                        <div className="slider-product__body swiper">
-                                            <div className="slider-product__slide">
-                                                <img src="img/product1.jpg" alt="" />
-                                            </div>
-                                            <div className="slider-product__slide">
-                                                <img src="img/product2.jpg" alt="" />
-                                            </div>
-                                        </div>
 
-                                        <div className="slider-product-controls">
-                                            <div className="slider-product-controls__arrows slider-arrows">
-                                                <button
-                                                    type="button"
-                                                    className="slider-arrow slider-arrow__prev icon-chevron__left"></button>
-                                                <button
-                                                    type="button"
-                                                    className="slider-arrow slider-arrow__next icon-chevron__right"></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="page__thumb-slider thumb-slider">
-                                <div className="thumb-slider__body">
-                                    <div className="thumb-slider__slider">
-                                        <div className="slider-thumb__body swiper">
-                                            <div className="slider-thumb__slide">
-                                                <img src="img/product1.jpg" alt="" />
-                                            </div>
-                                            <div className="slider-thumb__slide">
-                                                <img src="img/product2.jpg" alt="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="modal-body__content">
-                            <h4 className="product-name">{singleProduct.name}</h4>
-                            <h4 className="product-price">{singleProduct.price} MDL</h4>
-
-                            <p>{singleProduct.description}</p>
-                            {/* <button className="add-cart button button__dark added">
-                                <div className="icon-done"></div>
-                                Добавить в корзину
-                            </button> */}
-                        </div>
-                    </div>
-                )}
-
-                <button
-                    type="button"
-                    onClick={closeModal}
-                    className="product-modal__close icon-close"></button>
-            </div>
+            <Modal
+                product={singleProduct}
+                loading={loading}
+                openModal={openModal}
+                closeModal={closeModal}
+            />
         </>
     );
 }
