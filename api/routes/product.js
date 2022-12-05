@@ -50,25 +50,37 @@ router.get('/find/:id', async (req, res) => {
 
 // * GET ALL PRODUCTS
 router.get('/', async (req, res) => {
-    const qNew = req.query.new;
-    // const qId = req.query.id;
+    // const qNew = req.query.new;
+    const qId = req.query.id;
     const qCategory = req.query.category;
+    const qSubcategory = req.query.subcategory;
     const qBrand = req.query.brand;
     try {
         let products;
-        if (qNew) {
-            products = await Product.find().sort({ createdAt: -1 }).limit(1);
-        } else if (qCategory) {
-            products = await Product.find({ categories: { $in: [qCategory.toLowerCase()] } });
-        } else if (qBrand) {
-            products = await Product.find({ brand: qBrand });
+        if (qId) {
+            products = await Product.find({ _id: qId });
+            // products = await Product.find().sort({ createdAt: -1 }).limit(1);
+        } else if (qCategory && !qBrand && !qSubcategory) {
+            products = await Product.find({ category: { $in: qCategory } });
+        } else if (qCategory && qBrand && !qSubcategory) {
+            products = await Product.find({
+                category: { $in: qCategory },
+                brand: qBrand,
+            });
+        } else if (qCategory && qSubcategory) {
+            products = await Product.find({
+                category: { $in: qCategory },
+                subcategory: qSubcategory,
+            });
+        } else if (qCategory && qSubcategory && qBrand) {
+            products = await Product.find({
+                category: { $in: qCategory },
+                subcategory: qSubcategory,
+                brand: qBrand,
+            });
         } else {
             products = await Product.find();
         }
-
-        // else if (qId) {
-        //     products = await Product.find({ _id: qId });
-        // }
 
         res.status(200).json(products);
     } catch (error) {
